@@ -1,0 +1,37 @@
+# The link to the problem: https://leetcode.com/problems/license-key-formatting/
+
+def licenseKeyFormatting(s: str, k: int) -> str:
+    if len(s) <= k:
+        if s.find('-') == -1:
+            return s.upper()
+        else:
+            return s.replace('-', '',).upper()
+    s = s.split('-')
+    ss = ''
+    for element in s:
+        ss = ss + element
+    l = len(ss)
+    nf = l // k
+    first_gr = l % k
+    if first_gr == 0:
+        sf = ''
+        for i in range(first_gr,l,k):
+            if i == l-k:
+                sf= sf + ss[i:i+k].upper()
+            else:
+                sf= sf + ss[i:i+k].upper() + '-' 
+    else:
+        sf = ss[:first_gr].upper() + '-'
+        for i in range(first_gr,l,k):
+            if i == l-k:
+                sf= sf + ss[i:i+k].upper()
+            else:
+                sf= sf + ss[i:i+k].upper() + '-'
+    return sf     
+
+# example:
+s = "5F3Z-2e-9-w"
+k = 4
+
+result = licenseKeyFormatting(s, k) 
+print((result))
