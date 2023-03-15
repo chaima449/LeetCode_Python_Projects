@@ -1,0 +1,113 @@
+# these dictionaries matches each number to its corresponding words in english
+ones = {
+    '1' : 'One',
+    '2' : 'Two',
+    '3' : 'Three',
+    '4' : 'Four',
+    '5' : 'Five',
+    '6' : 'Six',
+    '7' : 'Seven',
+    '8' : 'Eight',
+    '9' : 'Nine'
+}    
+tens = {
+    '1' : 'Ten',
+    '2' : 'Twenty',
+    '3' : 'Thirty',
+    '4' : 'Forty',
+    '5' : 'Fifty',
+    '6' : 'Sixty',
+    '7' : 'Seventy',
+    '8' : 'Eighty',
+    '9' : 'Ninety'
+} 
+ten_and = {
+    '1' : 'Eleven',
+    '2' : 'Twelve',
+    '3' : 'Thirteen',
+    '4' : 'Fourteen',
+    '5' : 'Fifteen',
+    '6' : 'Sixteen',
+    '7' : 'Seventeen',
+    '8' : 'Eighteen',
+    '9' : 'Nineteen'
+}
+hundreds = {
+    '1' : 'One Hundred',
+    '2' : 'Two Hundred',
+    '3' : 'Three Hundred',
+    '4' : 'Four Hundred',
+    '5' : 'Five Hundred',
+    '6' : 'Six Hundred',
+    '7' : 'Seven Hundred',
+    '8' : 'Eight Hundred',
+    '9' : 'Nine Hundred'
+} 
+others = {
+    '1' : 'Thousand',
+    '2' : 'Million',
+    '3' : 'Billion',
+}
+def numberToWords(num: int) -> str: # this function converts a number less than 4 billions to words
+    if num == 0:
+        return 'Zero'
+    decomp = decompose_num(num)
+    word = ''
+    for i in range(len(decomp)): # len(dnm) = 4
+        if decomp[i] != 0:
+            nm = decomp[i]
+            word += read_three_digit_number(nm)
+            if i == 0:
+                word += ' Billion'
+                if decomp[1] != 0 or decomp[2] != 0 or decomp[3] != 0:
+                    word += ' '
+            elif i == 1:    
+                word += ' Million'
+                if decomp[2] != 0 or decomp[3] != 0:
+                    word += ' '
+            elif i == 2:
+                word += ' Thousand'
+                if decomp[3] != 0:
+                    word += ' '
+    return word        
+
+
+def read_three_digit_number(nm): # this function converts a three digits number to words
+    snm = str(nm)
+    if len(snm) == 1:  # 1 digit number
+        return ones[snm]
+    elif len(snm) == 2:  # 2 digits number
+        if snm[1] == '0':
+            return tens[snm[0]]
+        elif nm < 20:
+            return ten_and[snm[1]]
+        else:
+            return tens[snm[0]] + ' ' + ones[snm[1]]
+    else:                   # 3 digits number
+        if snm[1] == '0' and snm[2] == '0':
+            return hundreds[snm[0]]
+        else:
+            if snm[2] == '0':
+                return hundreds[snm[0]] + ' ' + tens[snm[1]]
+            elif snm[1] == '0':
+                return hundreds[snm[0]] + ' ' + ones[snm[2]]
+            else:
+                if nm % 100 < 20:
+                    return hundreds[snm[0]] + ' ' + ten_and[snm[2]]
+                else:
+                    return hundreds[snm[0]] + ' ' + tens[snm[1]] + ' ' + ones[snm[2]]          
+
+def decompose_num(num): # this function returns the decomposition into billions, millions...
+    dnm = []
+    dnm.append(num // 1000000000)
+    num = num % 1000000000
+    dnm.append(num // 1000000)
+    num = num % 1000000
+    dnm.append(num // 1000)
+    dnm.append(num % 1000)
+    return dnm
+
+# example:
+num = 1150342427
+res3 = numberToWords(num)
+print(res3)
