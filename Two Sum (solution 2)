@@ -1,0 +1,25 @@
+# link to the problem: https://leetcode.com/problems/two-sum/
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        arr = []
+        result = []
+
+        for i in range(len(nums)):
+            arr.append(target - nums[i])
+        
+        nums_set = set(nums)
+        arr_set = set(arr)    
+
+        com_set = nums_set & arr_set
+        com_list = list(com_set)
+        com = com_list[0]
+        ind1 = nums.index(com)
+        try:
+            ind2 = arr[ind1 + 1:].index(com) + ind1 + 1
+        except ValueError:
+            ind2 = arr[:ind1].index(com)  
+    
+        result.append(ind1)
+        result.append(ind2)
+        return result 
